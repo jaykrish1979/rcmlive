@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCM Portal | Phase 5 – SOPs &amp; Compliance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    /* ===== BASE FALLBACKS (in case /css/styles.css is absent) ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Outfit', sans-serif; background: #f1f5f9; color: #1e293b; }
+    .app-page { min-height: 100vh; }
+    .app-header {
+      background: #fff; border-bottom: 1px solid rgba(148,163,184,0.2);
+      padding: 0 1.5rem; height: 56px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .header-left  { display: flex; align-items: center; gap: 1.5rem; }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .logo-text { font-weight: 700; color: #0d9488; text-decoration: none; font-size: 1.1rem; }
+    .main-nav { display: flex; gap: 0.4rem; }
+    .nav-link {
+      padding: 0.35rem 0.75rem; border-radius: 6px; text-decoration: none;
+      font-size: 0.875rem; color: #64748b; transition: all 0.15s;
+    }
+    .nav-link:hover, .nav-link.active { background: rgba(13,148,136,0.1); color: #0d9488; }
+    .user-name { font-size: 0.875rem; color: #64748b; }
+    .btn-logout {
+      padding: 0.35rem 0.85rem; border-radius: 6px;
+      border: 1px solid rgba(148,163,184,0.3); background: transparent;
+      color: #64748b; font-size: 0.8rem; cursor: pointer; font-family: inherit;
+    }
+    .btn-logout:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
+
+    /* ===== PAGE LAYOUT ===== */
+    .sop-page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .sop-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: #0d9488; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem;
+    }
+    .sop-back:hover { text-decoration: underline; }
+
+    /* ===== PHASE HERO BANNER ===== */
+    .phase-hero {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 60%, #155e75 100%);
+      border-radius: 16px; padding: 2.25rem 2.5rem; margin-bottom: 2.5rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 2rem;
+      align-items: center; color: #fff; overflow: hidden; position: relative;
+    }
+    .phase-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 85% 40%, rgba(255,255,255,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .phase-tag {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; opacity: 0.75; margin-bottom: 0.5rem;
+    }
+    .phase-hero h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .phase-hero > div > p { font-size: 0.9rem; opacity: 0.85; line-height: 1.6; max-width: 520px; }
+    .phase-hero-stats { display: flex; gap: 2rem; margin-top: 1.5rem; }
+    .phase-stat-num { font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .phase-stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 0.2rem; }
+    .hero-illustration { flex-shrink: 0; }
+    @media (max-width: 680px) {
+      .phase-hero { grid-template-columns: 1fr; }
+      .hero-illustration { display: none; }
+    }
+
+    /* ===== SOP SECTION HEADER ===== */
+    .sop-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;
+    }
+    .sop-section-header h2 { font-size: 1.15rem; font-weight: 600; }
+    .sop-filters { display: flex; gap: 0.4rem; }
+    .sop-filter {
+      padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; border: 1px solid rgba(148,163,184,0.3);
+      background: transparent; color: #64748b; font-family: inherit; transition: all 0.15s;
+    }
+    .sop-filter.active, .sop-filter:hover {
+      background: #0d9488; border-color: #0d9488; color: #fff;
+    }
+
+    /* ===== SOP CARDS GRID ===== */
+    .sop-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+      gap: 1.15rem; margin-bottom: 2.5rem;
+    }
+    .sop-card {
+      background: #fff; border: 1px solid rgba(148,163,184,0.2); border-radius: 12px;
+      padding: 1.4rem; cursor: pointer; transition: all 0.2s;
+      display: flex; flex-direction: column; gap: 0.65rem; position: relative; overflow: hidden;
+    }
+    .sop-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #0d9488, #0891b2); opacity: 0; transition: opacity 0.2s;
+    }
+    .sop-card:hover { border-color: #0d9488; box-shadow: 0 4px 20px rgba(13,148,136,0.13); transform: translateY(-2px); }
+    .sop-card:hover::after { opacity: 1; }
+    .sop-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+    .sop-id {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      background: rgba(13,148,136,0.1); color: #0d9488; padding: 0.22rem 0.55rem; border-radius: 5px;
+    }
+    .sop-status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; }
+    .sop-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .sop-dot.active { background: #22c55e; }
+    .sop-dot.draft  { background: #f59e0b; }
+    .sop-dot.review { background: #3b82f6; }
+    .sop-status.active { color: #15803d; }
+    .sop-status.draft  { color: #b45309; }
+    .sop-status.review { color: #1d4ed8; }
+    .sop-card-title { font-size: 0.925rem; font-weight: 600; line-height: 1.4; color: #1e293b; }
+    .sop-card-desc { font-size: 0.8rem; color: #64748b; line-height: 1.55; }
+    .sop-card-meta {
+      display: flex; gap: 0.85rem; font-size: 0.73rem; color: #94a3b8;
+      padding-top: 0.65rem; border-top: 1px solid rgba(148,163,184,0.15); margin-top: auto;
+    }
+    .sop-open-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      width: 100%; padding: 0.55rem; border-radius: 8px;
+      border: 1px solid rgba(13,148,136,0.3); background: rgba(13,148,136,0.05);
+      color: #0d9488; font-size: 0.8rem; font-weight: 500; cursor: pointer;
+      font-family: inherit; transition: all 0.15s; margin-top: 0.15rem;
+    }
+    .sop-open-btn:hover { background: #0d9488; border-color: #0d9488; color: #fff; }
+
+    /* ===== COMPLIANCE CHECKLIST BLOCK ===== */
+    .checklist-block {
+      background: #fff; border: 1px solid rgba(148,163,184,0.2); border-radius: 12px;
+      padding: 1.5rem; margin-top: 0.5rem;
+    }
+    .checklist-block h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+    .checklist-items { display: flex; flex-direction: column; gap: 0.45rem; }
+    .checklist-item {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0.85rem;
+      border-radius: 8px; font-size: 0.875rem; background: #f8fafc;
+      border: 1px solid transparent; cursor: pointer; transition: all 0.15s; user-select: none;
+    }
+    .checklist-item:hover { border-color: rgba(13,148,136,0.3); background: rgba(13,148,136,0.04); }
+    .checklist-item input[type="checkbox"] { accent-color: #0d9488; width: 1rem; height: 1rem; cursor: pointer; }
+
+    /* ===== SOP MODAL BACKDROP ===== */
+    .sop-modal {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.7);
+      z-index: 1000; display: flex; align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem 2rem; backdrop-filter: blur(4px); overflow-y: auto;
+    }
+    .sop-modal.hidden { display: none; }
+
+    /* ===== PDF VIEWER CONTAINER ===== */
+    .sop-viewer {
+      width: 100%; max-width: 860px; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45); display: flex; flex-direction: column;
+      margin: auto;
+    }
+
+    /* Toolbar */
+    .viewer-toolbar {
+      background: #1e293b; color: #fff; display: flex; align-items: center;
+      gap: 0.75rem; padding: 0.7rem 1.2rem; flex-wrap: wrap; flex-shrink: 0;
+    }
+    .viewer-sop-id {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      background: rgba(13,148,136,0.55); padding: 0.2rem 0.55rem; border-radius: 4px; flex-shrink: 0;
+    }
+    .viewer-sop-title {
+      flex: 1; font-size: 0.83rem; font-weight: 500; min-width: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .viewer-actions { display: flex; gap: 0.45rem; flex-shrink: 0; }
+    .viewer-btn {
+      background: rgba(255,255,255,0.1); border: none; color: #fff; border-radius: 6px;
+      padding: 0.38rem 0.72rem; font-size: 0.77rem; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; gap: 0.3rem; transition: background 0.15s;
+    }
+    .viewer-btn:hover { background: rgba(255,255,255,0.2); }
+    .viewer-btn.danger { background: rgba(239,68,68,0.25); }
+    .viewer-btn.danger:hover { background: rgba(239,68,68,0.5); }
+
+    /* Document scroll area */
+    .viewer-scroll {
+      background: #d1d5db; padding: 1.75rem 1.5rem; overflow-y: auto;
+      max-height: calc(100vh - 140px);
+    }
+
+    /* The white "paper" */
+    .sop-doc {
+      background: #fff; max-width: 700px; margin: 0 auto;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18); font-family: 'Outfit', sans-serif;
+    }
+
+    /* Letterhead */
+    .doc-letterhead {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color: #fff;
+      padding: 1.4rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem;
+    }
+    .doc-org-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
+    .doc-org-name { font-size: 1rem; font-weight: 700; margin-top: 0.15rem; }
+    .doc-lh-right { text-align: right; font-size: 0.7rem; line-height: 1.6; opacity: 0.85; }
+
+    /* Meta bar */
+    .doc-meta {
+      background: #f8fafc; border-bottom: 2px solid #0d9488;
+      padding: 0.9rem 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem;
+    }
+    .doc-meta-item label {
+      display: block; text-transform: uppercase; font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.09em; color: #94a3b8; margin-bottom: 0.18rem;
+    }
+    .doc-meta-item span { font-size: 0.78rem; font-weight: 600; color: #1e293b; }
+
+    /* Document body */
+    .doc-body { padding: 1.75rem 2rem; }
+    .doc-title { font-size: 1.2rem; font-weight: 700; color: #0d9488; margin-bottom: 0.3rem; }
+    .doc-subtitle {
+      font-size: 0.77rem; color: #64748b; margin-bottom: 1.75rem;
+      padding-bottom: 1.1rem; border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* Sections within the document */
+    .ds { margin-bottom: 1.6rem; }
+    .ds h2 {
+      font-size: 0.82rem; font-weight: 700; color: #0d9488; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 0.65rem; padding-bottom: 0.38rem;
+      border-bottom: 1px solid rgba(13,148,136,0.2); display: flex; align-items: center; gap: 0.45rem;
+    }
+    .sn {
+      background: #0d9488; color: #fff; min-width: 1.35rem; height: 1.35rem; border-radius: 4px;
+      font-size: 0.65rem; display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-weight: 700;
+    }
+    .ds p { font-size: 0.84rem; line-height: 1.75; color: #334155; margin-bottom: 0.6rem; }
+    .ds ul, .ds ol { padding-left: 1.4rem; margin: 0.3rem 0 0.65rem; }
+    .ds li { font-size: 0.84rem; line-height: 1.75; color: #334155; margin-bottom: 0.25rem; }
+    .ds h3 { font-size: 0.82rem; font-weight: 600; color: #1e293b; margin: 0.85rem 0 0.45rem; }
+    .ds strong { color: #1e293b; }
+
+    /* Step box */
+    .step-box {
+      border: 1px solid rgba(13,148,136,0.22); border-left: 3px solid #0d9488;
+      border-radius: 6px; padding: 0.9rem 1.1rem; margin-bottom: 0.85rem;
+      background: rgba(13,148,136,0.025);
+    }
+    .step-hd { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .step-lbl {
+      background: #0d9488; color: #fff; font-size: 0.65rem; font-weight: 700;
+      padding: 0.12rem 0.48rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .step-title { font-size: 0.84rem; font-weight: 600; color: #0f766e; }
+
+    /* KPI table */
+    .kpi-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0.65rem 0; }
+    .kpi-table th { background: #0d9488; color: #fff; padding: 0.48rem 0.75rem; text-align: left; font-weight: 600; font-size: 0.75rem; }
+    .kpi-table td { padding: 0.48rem 0.75rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+    .kpi-table tr:nth-child(even) td { background: #f8fafc; }
+    .kpi-target { font-weight: 600; color: #0d9488; }
+
+    /* Callout */
+    .callout {
+      background: rgba(13,148,136,0.07); border: 1px solid rgba(13,148,136,0.22);
+      border-radius: 7px; padding: 0.8rem 0.95rem; margin: 0.6rem 0;
+      font-size: 0.81rem; color: #0f766e; line-height: 1.6;
+      display: flex; gap: 0.45rem; align-items: flex-start;
+    }
+    .callout-ico { flex-shrink: 0; }
+
+    /* Warning */
+    .warn-box {
+      background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 7px; padding: 0.8rem 0.95rem; margin: 0.6rem 0;
+      font-size: 0.81rem; color: #92400e; line-height: 1.6;
+    }
+
+    /* Inline illustration */
+    .doc-illus { margin: 1.25rem 0; text-align: center; }
+    .doc-illus figcaption { font-size: 0.7rem; color: #94a3b8; margin-top: 0.45rem; font-style: italic; }
+
+    /* Document footer */
+    .doc-footer {
+      padding: 0.85rem 2rem; background: #f8fafc; border-top: 1px solid #e2e8f0;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.68rem; color: #94a3b8;
+    }
+
+    /* Responsibilities table */
+    .resp-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0.5rem 0 0.65rem; }
+    .resp-table th { background: #f1f5f9; padding: 0.42rem 0.75rem; text-align: left; font-weight: 600; font-size: 0.75rem; color: #1e293b; border-bottom: 2px solid #e2e8f0; }
+    .resp-table td { padding: 0.42rem 0.75rem; border-bottom: 1px solid #e2e8f0; color: #334155; vertical-align: top; }
+    .resp-table tr:last-child td { border-bottom: none; }
+  </style>
+</head>
+<body class="app-page">
+
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <div class="header-left">
+      <a href="/dashboard.html" class="logo-text">RCM Portal</a>
+      <nav class="main-nav">
+        <a href="/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/sop-phase5.html" class="nav-link active">Phase 5 SOPs</a>
+        <a href="/help.html" class="nav-link">Help</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span class="user-name" id="userName">—</span>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="sop-page">
+    <a href="/dashboard.html" class="sop-back">← Back to Dashboard</a>
+
+    <!-- Phase hero with AI illustration -->
+    <div class="phase-hero">
+      <div>
+        <div class="phase-tag">Phase 5 · SOPs &amp; Compliance</div>
+        <h1>Standard Operating Procedures</h1>
+        <p>Complete compliance documentation covering eligibility verification, coding standards, claim submission, HIPAA protocols, denial management, and more. Click any SOP card to open the full document.</p>
+        <div class="phase-hero-stats">
+          <div>
+            <div class="phase-stat-num">8</div>
+            <div class="phase-stat-label">SOPs</div>
+          </div>
+          <div>
+            <div class="phase-stat-num">8</div>
+            <div class="phase-stat-label">Active</div>
+          </div>
+          <div>
+            <div class="phase-stat-num">HIPAA</div>
+            <div class="phase-stat-label">Compliant</div>
+          </div>
+          <div>
+            <div class="phase-stat-num">2024</div>
+            <div class="phase-stat-label">Edition</div>
+          </div>
+        </div>
+      </div>
+      <!-- AI Network Illustration -->
+      <div class="hero-illustration" aria-hidden="true">
+        <svg width="210" height="185" viewBox="0 0 210 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer glow ring -->
+          <circle cx="105" cy="92" r="72" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+          <circle cx="105" cy="92" r="56" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <!-- Connection lines (dashed) -->
+          <line x1="105" y1="36" x2="105" y2="60" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <line x1="155" y1="62" x2="136" y2="72" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <line x1="155" y1="122" x2="136" y2="112" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <line x1="105" y1="148" x2="105" y2="124" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <line x1="55" y1="122" x2="74" y2="112" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <line x1="55" y1="62" x2="74" y2="72" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <!-- Central AI hub -->
+          <circle cx="105" cy="92" r="28" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+          <text x="105" y="87" text-anchor="middle" fill="white" font-size="9" font-weight="700" font-family="Outfit,sans-serif">AI-Powered</text>
+          <text x="105" y="99" text-anchor="middle" fill="white" font-size="7.5" font-family="Outfit,sans-serif" opacity="0.85">Compliance</text>
+          <!-- Brainwave accent -->
+          <path d="M90 92 Q95 86 100 92 Q105 98 110 92 Q115 86 120 92" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Satellite node: Eligibility (top) -->
+          <circle cx="105" cy="26" r="16" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+          <text x="105" y="24" text-anchor="middle" fill="white" font-size="5.5" font-family="Outfit,sans-serif" font-weight="600">Eligibility</text>
+          <text x="105" y="32" text-anchor="middle" fill="white" font-size="5" font-family="Outfit,sans-serif" opacity="0.75">Verify</text>
+          <!-- Satellite node: Coding (top-right) -->
+          <circle cx="163" cy="55" r="16" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+          <text x="163" y="53" text-anchor="middle" fill="white" font-size="5.5" font-family="Outfit,sans-serif" font-weight="600">Medical</text>
+          <text x="163" y="61" text-anchor="middle" fill="white" font-size="5" font-family="Outfit,sans-serif" opacity="0.75">Coding</text>
+          <!-- Satellite node: Claims (bottom-right) -->
+          <circle cx="163" cy="129" r="16" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+          <text x="163" y="127" text-anchor="middle" fill="white" font-size="5.5" font-family="Outfit,sans-serif" font-weight="600">Claims</text>
+          <text x="163" y="135" text-anchor="middle" fill="white" font-size="5" font-family="Outfit,sans-serif" opacity="0.75">Submit</text>
+          <!-- Satellite node: HIPAA (bottom) -->
+          <circle cx="105" cy="158" r="16" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+          <text x="105" y="156" text-anchor="middle" fill="white" font-size="5.5" font-family="Outfit,sans-serif" font-weight="600">HIPAA</text>
+          <text x="105" y="164" text-anchor="middle" fill="white" font-size="5" font-family="Outfit,sans-serif" opacity="0.75">Comply</text>
+          <!-- Satellite node: Denial Mgmt (bottom-left) -->
+          <circle cx="47" cy="129" r="16" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+          <text x="47" y="127" text-anchor="middle" fill="white" font-size="5.5" font-family="Outfit,sans-serif" font-weight="600">Denial</text>
+          <text x="47" y="135" text-anchor="middle" fill="white" font-size="5" font-family="Outfit,sans-serif" opacity="0.75">Manage</text>
+          <!-- Satellite node: Audit (top-left) -->
+          <circle cx="47" cy="55" r="16" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+          <text x="47" y="53" text-anchor="middle" fill="white" font-size="5.5" font-family="Outfit,sans-serif" font-weight="600">Audit</text>
+          <text x="47" y="61" text-anchor="middle" fill="white" font-size="5" font-family="Outfit,sans-serif" opacity="0.75">Track</text>
+          <!-- Decorative sparkles -->
+          <circle cx="192" cy="18" r="2.5" fill="rgba(255,255,255,0.35)"/>
+          <circle cx="200" cy="32" r="1.8" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="182" cy="9"  r="1.8" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="12"  cy="152" r="2.2" fill="rgba(255,255,255,0.25)"/>
+          <circle cx="20"  cy="165" r="1.5" fill="rgba(255,255,255,0.2)"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Section header -->
+    <div class="sop-section-header">
+      <h2>Standard Operating Procedures — Phase 5</h2>
+      <div class="sop-filters">
+        <button class="sop-filter active" onclick="filterSops(this,'all')">All (8)</button>
+        <button class="sop-filter" onclick="filterSops(this,'active')">Active</button>
+      </div>
+    </div>
+
+    <!-- SOP cards -->
+    <div class="sop-grid" id="sopGrid"></div>
+
+    <!-- Compliance checklist -->
+    <div class="checklist-block">
+      <h2>📋 Phase 5 Compliance Readiness Checklist</h2>
+      <div class="checklist-items" id="complianceChecklist"></div>
+    </div>
+  </main>
+
+  <!-- ===== SOP PDF VIEWER MODAL ===== -->
+  <div class="sop-modal hidden" id="sopModal" role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+    <div class="sop-viewer">
+      <!-- Toolbar -->
+      <div class="viewer-toolbar">
+        <span class="viewer-sop-id" id="viewerSopId"></span>
+        <span class="viewer-sop-title" id="viewerTitle"></span>
+        <div class="viewer-actions">
+          <button class="viewer-btn" id="printBtn" title="Print this SOP">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print
+          </button>
+          <button class="viewer-btn danger" id="closeBtn" title="Close">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Close
+          </button>
+        </div>
+      </div>
+      <!-- Scrollable document area -->
+      <div class="viewer-scroll" id="viewerScroll">
+        <div class="sop-doc">
+          <!-- Letterhead -->
+          <div class="doc-letterhead">
+            <div>
+              <div class="doc-org-label">RCM Go-Live Portal · Kochi, Kerala</div>
+              <div class="doc-org-name">Standard Operating Procedure</div>
+            </div>
+            <div class="doc-lh-right" id="docLhRight"></div>
+          </div>
+          <!-- Meta bar -->
+          <div class="doc-meta" id="docMeta"></div>
+          <!-- Body -->
+          <div class="doc-body">
+            <div class="doc-title" id="docTitle"></div>
+            <div class="doc-subtitle" id="docSubtitle"></div>
+            <div id="docContent"></div>
+          </div>
+          <!-- Footer -->
+          <div class="doc-footer">
+            <span>RCM Go-Live Portal · US Healthcare Revenue Cycle Management</span>
+            <span id="docFooterRef"></span>
+            <span>Confidential &amp; Proprietary</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/protection.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+  // ─── Auth ────────────────────────────────────────────────────────────────
+  (function() {
+    try {
+      const user = typeof getAuthUser === 'function' ? getAuthUser() : null;
+      const el = document.getElementById('userName');
+      const lb = document.getElementById('logoutBtn');
+      if (user) {
+        if (el) el.textContent = user.name || user.username;
+      } else {
+        if (el) el.innerHTML = '<a href="/" style="color:inherit;">Sign In</a>';
+        if (lb) lb.style.display = 'none';
+      }
+    } catch(e) {}
+  })();
+
+  // ─── SOP DATA ────────────────────────────────────────────────────────────
+  const SOPS = [
+    {
+      id: 'SOP-001',
+      title: 'Insurance Eligibility Verification & Benefits Determination',
+      category: 'Patient Financial Clearance',
+      description: 'Structured process to confirm patient coverage, benefit details, and authorization requirements prior to service delivery to reduce claim denials.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Revenue Cycle Manager',
+      status: 'active',
+      content: buildSop001()
+    },
+    {
+      id: 'SOP-002',
+      title: 'Patient Registration & Demographics Management',
+      category: 'Patient Access',
+      description: 'Accurate collection, verification, and maintenance of patient demographic and insurance information at point of registration.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Patient Access Manager',
+      status: 'active',
+      content: buildSop002()
+    },
+    {
+      id: 'SOP-003',
+      title: 'Medical Coding Compliance (ICD-10 / CPT / HCPCS)',
+      category: 'Clinical Coding',
+      description: 'Ensures accurate, compliant assignment of diagnosis and procedure codes to support clean claim submission and regulatory compliance.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Coding Supervisor',
+      status: 'active',
+      content: buildSop003()
+    },
+    {
+      id: 'SOP-004',
+      title: 'Claim Submission & Payer Follow-up',
+      category: 'Claims Management',
+      description: 'End-to-end process for generating, scrubbing, submitting, and following up on claims to ensure timely and accurate reimbursement.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Claims Manager',
+      status: 'active',
+      content: buildSop004()
+    },
+    {
+      id: 'SOP-005',
+      title: 'HIPAA Compliance & PHI Data Protection',
+      category: 'Compliance & Privacy',
+      description: 'Protocols for protecting Protected Health Information (PHI), maintaining HIPAA compliance, and managing data breach response.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Compliance Officer',
+      status: 'active',
+      content: buildSop005()
+    },
+    {
+      id: 'SOP-006',
+      title: 'Denial Management & Claims Appeals Process',
+      category: 'Revenue Recovery',
+      description: 'Systematic approach to identifying, categorizing, appealing, and preventing claim denials to maximise net revenue recovery.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Denial Management Lead',
+      status: 'active',
+      content: buildSop006()
+    },
+    {
+      id: 'SOP-007',
+      title: 'Payment Posting & Account Reconciliation',
+      category: 'Cash Management',
+      description: 'Accurate and timely posting of EOB/ERA payments, patient payments, and reconciliation of accounts to maintain clean AR.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Cash Applications Manager',
+      status: 'active',
+      content: buildSop007()
+    },
+    {
+      id: 'SOP-008',
+      title: 'Business Associate Agreement (BAA) Management',
+      category: 'Compliance & Contracts',
+      description: 'Process for identifying vendors requiring BAAs, executing agreements, maintaining a BAA register, and managing renewals.',
+      version: '1.0',
+      effectiveDate: 'Jan 1, 2024',
+      reviewDate: 'Jan 1, 2025',
+      owner: 'Compliance Officer',
+      status: 'active',
+      content: buildSop008()
+    }
+  ];
+
+  // ─── SOP CONTENT BUILDERS ─────────────────────────────────────────────────
+  function buildSop001() {
+    return `
+<div class="ds">
+  <h2><span class="sn">1</span> Purpose</h2>
+  <p>To implement a structured insurance eligibility verification process that confirms patient coverage, benefit details, and authorization requirements prior to service delivery. This reduces claim denials, accelerates reimbursement, and improves patient financial transparency.</p>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">2</span> Scope</h2>
+  <p>This SOP applies to all patient financial clearance activities for outpatient, inpatient, and procedural billing within the revenue cycle. It includes verification of primary and secondary coverage, benefits investigation, prior authorization requirements, and patient financial responsibility communication.</p>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">3</span> Definitions</h2>
+  <ul>
+    <li><strong>Eligibility Verification:</strong> The process of confirming whether a patient's insurance plan is active and includes coverage for intended services.</li>
+    <li><strong>Benefits Verification:</strong> Review of plan coverage details — copays, coinsurance, deductibles, and coverage limits.</li>
+    <li><strong>Preauthorization:</strong> A payer requirement for approval before certain procedures or services are rendered.</li>
+  </ul>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">4</span> Responsibilities</h2>
+  <table class="resp-table">
+    <thead>
+      <tr><th>Role</th><th>Responsibility</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Front-End Billing Team</strong></td><td>Collect and verify insurance data; initiate coverage checks.</td></tr>
+      <tr><td><strong>Eligibility Specialist</strong></td><td>Conduct detailed benefits verification; document coverage and restrictions.</td></tr>
+      <tr><td><strong>Supervisor / Revenue Manager</strong></td><td>Review exceptions and unresolved coverage issues; approve escalations.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">5</span> Detailed Procedure</h2>
+  <p>The following workflow illustrates the six-step eligibility verification process:</p>
+
+  <div class="doc-illus">
+    <figure>
+      <svg width="100%" viewBox="0 0 540 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:540px">
+        <!-- Row 1: Steps 1-3 -->
+        <!-- Step 1 -->
+        <rect x="2" y="20" width="112" height="52" rx="7" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/>
+        <rect x="2" y="20" width="112" height="10" rx="7" fill="#0d9488"/>
+        <rect x="2" y="27" width="112" height="3" fill="#0d9488"/>
+        <text x="58" y="33" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Outfit,sans-serif">STEP 1</text>
+        <text x="58" y="51" text-anchor="middle" fill="#0f766e" font-size="8" font-weight="600" font-family="Outfit,sans-serif">Collect &amp;</text>
+        <text x="58" y="62" text-anchor="middle" fill="#0f766e" font-size="8" font-family="Outfit,sans-serif">Confirm Info</text>
+        <!-- Arrow 1→2 -->
+        <path d="M114 46 L128 46" stroke="#0d9488" stroke-width="1.8" marker-end="url(#arr)"/>
+        <!-- Step 2 -->
+        <rect x="130" y="20" width="112" height="52" rx="7" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/>
+        <rect x="130" y="20" width="112" height="10" rx="7" fill="#0d9488"/>
+        <rect x="130" y="27" width="112" height="3" fill="#0d9488"/>
+        <text x="186" y="33" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Outfit,sans-serif">STEP 2</text>
+        <text x="186" y="51" text-anchor="middle" fill="#0f766e" font-size="8" font-weight="600" font-family="Outfit,sans-serif">Verify Active</text>
+        <text x="186" y="62" text-anchor="middle" fill="#0f766e" font-size="8" font-family="Outfit,sans-serif">Coverage</text>
+        <!-- Arrow 2→3 -->
+        <path d="M242 46 L256 46" stroke="#0d9488" stroke-width="1.8" marker-end="url(#arr)"/>
+        <!-- Step 3 -->
+        <rect x="258" y="20" width="112" height="52" rx="7" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5"/>
+        <rect x="258" y="20" width="112" height="10" rx="7" fill="#0d9488"/>
+        <rect x="258" y="27" width="112" height="3" fill="#0d9488"/>
+        <text x="314" y="33" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Outfit,sans-serif">STEP 3</text>
+        <text x="314" y="51" text-anchor="middle" fill="#0f766e" font-size="8" font-weight="600" font-family="Outfit,sans-serif">Benefits &amp;</text>
+        <text x="314" y="62" text-anchor="middle" fill="#0f766e" font-size="8" font-family="Outfit,sans-serif">Financial Review</text>
+        <!-- Down arrow from Step 3 -->
+        <path d="M370 46 L390 46 L390 120 L384 120" stroke="#0d9488" stroke-width="1.8" fill="none" marker-end="url(#arr)"/>
+        <!-- Row 2: Steps 4-6 (right to left) -->
+        <!-- Step 4 -->
+        <rect x="258" y="128" width="112" height="52" rx="7" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+        <rect x="258" y="128" width="112" height="10" rx="7" fill="#3b82f6"/>
+        <rect x="258" y="135" width="112" height="3" fill="#3b82f6"/>
+        <text x="314" y="141" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Outfit,sans-serif">STEP 4</text>
+        <text x="314" y="159" text-anchor="middle" fill="#1d4ed8" font-size="8" font-weight="600" font-family="Outfit,sans-serif">Prior Auth &amp;</text>
+        <text x="314" y="170" text-anchor="middle" fill="#1d4ed8" font-size="8" font-family="Outfit,sans-serif">Referral Check</text>
+        <!-- Arrow 4→5 -->
+        <path d="M258 154 L244 154" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr2)"/>
+        <!-- Step 5 -->
+        <rect x="130" y="128" width="112" height="52" rx="7" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+        <rect x="130" y="128" width="112" height="10" rx="7" fill="#3b82f6"/>
+        <rect x="130" y="135" width="112" height="3" fill="#3b82f6"/>
+        <text x="186" y="141" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Outfit,sans-serif">STEP 5</text>
+        <text x="186" y="159" text-anchor="middle" fill="#1d4ed8" font-size="8" font-weight="600" font-family="Outfit,sans-serif">Document &amp;</text>
+        <text x="186" y="170" text-anchor="middle" fill="#1d4ed8" font-size="8" font-family="Outfit,sans-serif">Record Update</text>
+        <!-- Arrow 5→6 -->
+        <path d="M130 154 L116 154" stroke="#3b82f6" stroke-width="1.8" marker-end="url(#arr2)"/>
+        <!-- Step 6 -->
+        <rect x="2" y="128" width="112" height="52" rx="7" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="2" y="128" width="112" height="10" rx="7" fill="#22c55e"/>
+        <rect x="2" y="135" width="112" height="3" fill="#22c55e"/>
+        <text x="58" y="141" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Outfit,sans-serif">STEP 6</text>
+        <text x="58" y="159" text-anchor="middle" fill="#15803d" font-size="8" font-weight="600" font-family="Outfit,sans-serif">Patient Financial</text>
+        <text x="58" y="170" text-anchor="middle" fill="#15803d" font-size="8" font-family="Outfit,sans-serif">Communication</text>
+        <!-- Arrowhead markers -->
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0d9488"/>
+          </marker>
+          <marker id="arr2" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+            <path d="M6,0 L0,3 L6,6 Z" fill="#3b82f6"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>Fig 1 — AI-assisted Eligibility Verification Workflow (6-step process)</figcaption>
+    </figure>
+  </div>
+
+  <div class="step-box">
+    <div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">Collect &amp; Confirm Patient Information</span></div>
+    <ol>
+      <li>Collect full patient demographics: full name, DOB, address, contact, insurance carrier, policy number and group number.</li>
+      <li>Confirm identity via photo ID and insurance card.</li>
+      <li>Enter all information accurately in the practice management or billing system.</li>
+    </ol>
+    <div class="callout"><span class="callout-ico">💡</span> Accuracy at this stage prevents downstream denials and rework.</div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">Verify Active Coverage</span></div>
+    <ol>
+      <li>Access payer portals, clearinghouse systems, or EDI 270/271 transactions.</li>
+      <li>Confirm coverage status is active on the date of service.</li>
+      <li>Check effective and termination dates.</li>
+    </ol>
+    <div class="warn-box">⚠️ If coverage is inactive or expired: contact patient for updated insurance details, document follow-up status, and notify scheduler.</div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">Benefits &amp; Financial Responsibility Review</span></div>
+    <p style="font-size:0.84rem;color:#334155;margin-bottom:0.4rem;">Verify and document:</p>
+    <ul>
+      <li>Copay amount and frequency</li>
+      <li>Deductible amount and remaining balance</li>
+      <li>Coinsurance percentage</li>
+      <li>Out-of-pocket limits</li>
+      <li>Covered vs non-covered services</li>
+      <li>Specialist / referral requirements</li>
+    </ul>
+  </div>
+
+  <div class="step-box">
+    <div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Prior Authorization &amp; Referral Requirements</span></div>
+    <ol>
+      <li>Identify services requiring prior authorization per payer policy.</li>
+      <li>Check referral requirements for managed plans.</li>
+      <li>Initiate prior authorization requests with supporting clinical documentation.</li>
+      <li>Track authorization responses and document authorization numbers.</li>
+    </ol>
+  </div>
+
+  <div class="step-box">
+    <div class="step-hd"><span class="step-lbl">Step 5</span><span class="step-title">Documentation &amp; Record Update</span></div>
+    <ol>
+      <li>Save all verification results in the billing system.</li>
+      <li>Include payer response screenshots or reference IDs.</li>
+      <li>Maintain an audit trail of: date/time of verification, verifier name, payer contact or web response.</li>
+      <li>Store authorization codes and validity dates.</li>
+    </ol>
+  </div>
+
+  <div class="step-box">
+    <div class="step-hd"><span class="step-lbl">Step 6</span><span class="step-title">Patient Financial Communication</span></div>
+    <ol>
+      <li>Communicate verification results to the patient.</li>
+      <li>Explain: what is covered and not covered; copay, coinsurance, and deductible responsibilities; estimated patient financial responsibility.</li>
+      <li>Obtain patient acknowledgment and note in record.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">6</span> Tools &amp; Technology</h2>
+  <ul>
+    <li>Payer web portals</li>
+    <li>Clearinghouse eligibility systems</li>
+    <li>EDI processes (X12 270/271)</li>
+    <li>Practice management software integrations</li>
+    <li>Automated eligibility check tools</li>
+  </ul>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">7</span> Turnaround Time (TAT)</h2>
+  <ul>
+    <li><strong>Routine appointments:</strong> Complete verification at least 48–72 hours prior to service.</li>
+    <li><strong>Urgent / same-day cases:</strong> Perform real-time portal verification if available.</li>
+  </ul>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">8</span> Quality Metrics</h2>
+  <p>The following KPIs should be monitored monthly:</p>
+  <table class="kpi-table">
+    <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td>Eligibility Accuracy</td><td class="kpi-target">≥ 98%</td></tr>
+      <tr><td>Coverage Verified Before Service</td><td class="kpi-target">≥ 95%</td></tr>
+      <tr><td>Prior Authorization Compliance</td><td class="kpi-target">≥ 98%</td></tr>
+      <tr><td>Patient Responsibility Communicated</td><td class="kpi-target">≥ 90%</td></tr>
+      <tr><td>Claim Denials Related to Eligibility</td><td class="kpi-target">&lt; 3%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">9</span> Exceptions &amp; Escalation</h2>
+  <p>If eligibility cannot be confirmed:</p>
+  <ul>
+    <li>Notify patient scheduler and clinician.</li>
+    <li>Escalate coverage issues to supervisor.</li>
+    <li>Re-verify using alternative payer contact methods.</li>
+  </ul>
+</div>
+
+<div class="ds">
+  <h2><span class="sn">10</span> Benefits of Following This SOP</h2>
+  <ul>
+    <li>Reduced claim denials and rework</li>
+    <li>Improved revenue cycle performance</li>
+    <li>Enhanced patient financial transparency</li>
+    <li>Better compliance with payer requirements</li>
+    <li>Smoother prior authorization workflow</li>
+  </ul>
+</div>`;
+  }
+
+  function buildSop002() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To ensure accurate, complete, and consistent collection of patient demographic and insurance information at every point of registration, reducing claim rejections caused by data entry errors.</p></div>
+<div class="ds"><h2><span class="sn">2</span> Scope</h2>
+<p>Applies to all new patient registrations, returning patient updates, and walk-in encounters across all service lines.</p></div>
+<div class="ds"><h2><span class="sn">3</span> Procedure</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">Identity Verification</span></div>
+<ul><li>Request and scan government-issued photo ID.</li><li>Request and scan front/back of insurance card.</li><li>Verify patient is the named insured or document relationship.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">Demographics Data Entry</span></div>
+<ul><li>Enter legal name (as on insurance card), DOB, address, phone, email.</li><li>Confirm SSN for Medicare/Medicaid patients.</li><li>Record emergency contact details.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">Insurance Capture</span></div>
+<ul><li>Enter primary and secondary insurance details.</li><li>Record member ID, group number, payer ID, and effective dates.</li><li>Capture subscriber information if different from patient.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Consent &amp; Authorisation Forms</span></div>
+<ul><li>Obtain signed Assignment of Benefits (AOB).</li><li>Obtain HIPAA Privacy Notice acknowledgment.</li><li>File signed forms in the patient record.</li></ul></div></div>
+<div class="ds"><h2><span class="sn">4</span> Quality Metrics</h2>
+<table class="kpi-table"><thead><tr><th>Metric</th><th>Target</th></tr></thead><tbody>
+<tr><td>Registration Accuracy Rate</td><td class="kpi-target">≥ 99%</td></tr>
+<tr><td>Missing Field Rate</td><td class="kpi-target">&lt; 1%</td></tr>
+<tr><td>Claims Rejected (demographics)</td><td class="kpi-target">&lt; 2%</td></tr>
+</tbody></table></div>`;
+  }
+
+  function buildSop003() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To ensure accurate, compliant assignment of ICD-10-CM, CPT, and HCPCS Level II codes based on physician documentation, supporting clean claim submission and regulatory compliance.</p></div>
+<div class="ds"><h2><span class="sn">2</span> Scope</h2>
+<p>All inpatient DRG coding, outpatient E&amp;M coding, procedural coding, and facility coding activities performed by the coding team.</p></div>
+<div class="ds"><h2><span class="sn">3</span> Coding Procedure</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">Documentation Review</span></div>
+<p>Review the complete medical record: physician notes, operative reports, discharge summaries, lab, and radiology reports before assigning any code.</p></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">Code Selection</span></div>
+<ul><li>Assign diagnosis codes to the highest level of specificity.</li><li>Follow UHDDS guidelines for principal and secondary diagnoses.</li><li>Assign CPT/HCPCS codes for all procedures performed.</li><li>Assign correct modifiers where applicable.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">Compliance Check</span></div>
+<ul><li>Run edits against NCCI (National Correct Coding Initiative) and CCI tables.</li><li>Verify medical necessity linkage (diagnosis supports procedure).</li><li>Check LCD/NCD coverage criteria for high-risk codes.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Query Management</span></div>
+<p>When documentation is insufficient, issue a physician query using compliant query practices. Document query and response in the record.</p></div></div>
+<div class="ds"><h2><span class="sn">4</span> Quality Metrics</h2>
+<table class="kpi-table"><thead><tr><th>Metric</th><th>Target</th></tr></thead><tbody>
+<tr><td>Coding Accuracy Rate (internal audit)</td><td class="kpi-target">≥ 95%</td></tr>
+<tr><td>CC/MCC Capture Rate</td><td class="kpi-target">Per benchmark</td></tr>
+<tr><td>Claim Denials — Coding Related</td><td class="kpi-target">&lt; 2%</td></tr>
+<tr><td>Query Response Rate</td><td class="kpi-target">≥ 90%</td></tr>
+</tbody></table></div>`;
+  }
+
+  function buildSop004() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To define a standardised, timely process for generating, scrubbing, submitting electronic and paper claims, and following up with payers to ensure maximum and prompt reimbursement.</p></div>
+<div class="ds"><h2><span class="sn">2</span> Claim Submission Process</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">Claim Generation</span></div>
+<ul><li>Generate claims within 24–48 hours of service or discharge.</li><li>Verify all required fields: NPI, taxonomy, billing address, dates of service, diagnoses, and procedures.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">Claim Scrubbing</span></div>
+<ul><li>Run claim through clearinghouse scrubber before submission.</li><li>Resolve all front-end edits (eligibility, NPI, modifier errors).</li><li>Ensure no NCCI bundling violations.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">Electronic Submission (EDI 837)</span></div>
+<ul><li>Submit electronic claims via approved clearinghouse.</li><li>Confirm 999/277CA acknowledgment receipt within 24 hours.</li><li>Document submission date and batch number.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Payer Follow-up</span></div>
+<ul><li>Begin follow-up at 15 days post-submission for Medicare/Medicaid; 30 days for commercial payers.</li><li>Document each contact: date, rep name, reference number, and next action.</li><li>Escalate to supervisor if no response within payer TAT.</li></ul></div></div>
+<div class="ds"><h2><span class="sn">3</span> Quality Metrics</h2>
+<table class="kpi-table"><thead><tr><th>Metric</th><th>Target</th></tr></thead><tbody>
+<tr><td>Clean Claim Rate (first pass)</td><td class="kpi-target">≥ 95%</td></tr>
+<tr><td>Claim Submission TAT</td><td class="kpi-target">≤ 48 hrs post-service</td></tr>
+<tr><td>Days in AR (Commercial)</td><td class="kpi-target">&lt; 40 days</td></tr>
+<tr><td>AR &gt; 90 Days</td><td class="kpi-target">&lt; 15% of total AR</td></tr>
+</tbody></table></div>`;
+  }
+
+  function buildSop005() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To establish and enforce protocols that protect all forms of Protected Health Information (PHI) in compliance with the HIPAA Privacy Rule, Security Rule, and Breach Notification Rule.</p></div>
+<div class="ds"><h2><span class="sn">2</span> Key Protocols</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Protocol 1</span><span class="step-title">Access Control</span></div>
+<ul><li>Assign role-based access to PHI systems; least-privilege principle applies.</li><li>Enforce strong password policies and MFA for all clinical systems.</li><li>Conduct access reviews quarterly; revoke access immediately upon termination.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Protocol 2</span><span class="step-title">PHI Handling &amp; Transmission</span></div>
+<ul><li>Encrypt all PHI at rest (AES-256) and in transit (TLS 1.2+).</li><li>Prohibit transmission of PHI via unsecured email or personal devices.</li><li>Use secure file transfer protocols for all payer and vendor data exchange.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Protocol 3</span><span class="step-title">Training</span></div>
+<ul><li>All staff complete HIPAA training at onboarding and annually thereafter.</li><li>Training completion logged and maintained for audit purposes.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Protocol 4</span><span class="step-title">Breach Response</span></div>
+<ul><li>Report suspected breach to Compliance Officer within 1 hour of discovery.</li><li>Assess breach scope within 24 hours; notify affected individuals within 60 days.</li><li>Report breaches &gt; 500 individuals to HHS OCR within 60 days.</li></ul></div></div>
+<div class="ds"><h2><span class="sn">3</span> Compliance Indicators</h2>
+<table class="kpi-table"><thead><tr><th>Indicator</th><th>Target</th></tr></thead><tbody>
+<tr><td>Staff HIPAA Training Completion</td><td class="kpi-target">100%</td></tr>
+<tr><td>Access Review Completion (quarterly)</td><td class="kpi-target">100%</td></tr>
+<tr><td>Confirmed PHI Breaches (reportable)</td><td class="kpi-target">0</td></tr>
+</tbody></table></div>`;
+  }
+
+  function buildSop006() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To establish a systematic, data-driven process for identifying, categorising, appealing, and preventing claim denials, maximising net revenue recovery and reducing future denial rates.</p></div>
+<div class="ds"><h2><span class="sn">2</span> Denial Management Process</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">Denial Identification &amp; Logging</span></div>
+<ul><li>Capture all denials from ERA/EOB within 24 hours of receipt.</li><li>Log denial: claim number, DOS, payer, denial reason code (CARC/RARC), amount.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">Root Cause Categorisation</span></div>
+<ul><li>Categorise denials: eligibility, authorisation, coding, duplicate, timely filing, medical necessity, or credentialing.</li><li>Track by category to identify trends and root causes.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">Appeal Submission</span></div>
+<ul><li>Prepare appeal letter with supporting clinical documentation within payer appeal deadline.</li><li>Attach relevant records, auth numbers, or corrected claim as appropriate.</li><li>Submit appeal via certified mail or payer portal; document tracking number.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Prevention &amp; Feedback Loop</span></div>
+<ul><li>Report denial trends to billing team weekly.</li><li>Update front-end workflows to address root causes.</li><li>Escalate systemic payer issues to contract management.</li></ul></div></div>
+<div class="ds"><h2><span class="sn">3</span> Quality Metrics</h2>
+<table class="kpi-table"><thead><tr><th>Metric</th><th>Target</th></tr></thead><tbody>
+<tr><td>Overall Denial Rate</td><td class="kpi-target">&lt; 5%</td></tr>
+<tr><td>Appeal Overturn Rate</td><td class="kpi-target">≥ 65%</td></tr>
+<tr><td>Denial Resolution TAT</td><td class="kpi-target">≤ 30 days</td></tr>
+<tr><td>Timely Filing Denials</td><td class="kpi-target">0%</td></tr>
+</tbody></table></div>`;
+  }
+
+  function buildSop007() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To ensure accurate, timely posting of all insurance and patient payments, correct application of contractual adjustments, and full reconciliation of accounts receivable to maintain a clean balance sheet.</p></div>
+<div class="ds"><h2><span class="sn">2</span> Payment Posting Process</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">ERA / EOB Processing</span></div>
+<ul><li>Download ERA (835) transactions daily from clearinghouse or payer portal.</li><li>Auto-post ERA where available; manually post paper EOBs within 24 hours of receipt.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">Payment Posting &amp; Adjustments</span></div>
+<ul><li>Post allowed amount, contractual adjustment, patient responsibility, and payer payment.</li><li>Apply correct adjustment reason codes (CARC) per contract.</li><li>Flag underpayments (&gt;3% of contract rate) for review.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">Patient Payment Posting</span></div>
+<ul><li>Post copays, coinsurance, and deductible payments collected at point of service daily.</li><li>Issue patient receipts; reconcile cash drawer at end of each day.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Reconciliation</span></div>
+<ul><li>Reconcile total payments posted against bank deposits daily.</li><li>Investigate and resolve any variance &gt; $10 within 24 hours.</li><li>Submit monthly AR reconciliation report to management by the 5th of each month.</li></ul></div></div>
+<div class="ds"><h2><span class="sn">3</span> Quality Metrics</h2>
+<table class="kpi-table"><thead><tr><th>Metric</th><th>Target</th></tr></thead><tbody>
+<tr><td>Payment Posting TAT</td><td class="kpi-target">≤ 24 hrs from receipt</td></tr>
+<tr><td>Posting Accuracy Rate</td><td class="kpi-target">≥ 99.5%</td></tr>
+<tr><td>Underpayment Identification Rate</td><td class="kpi-target">≥ 95%</td></tr>
+<tr><td>Daily Reconciliation Completion</td><td class="kpi-target">100%</td></tr>
+</tbody></table></div>`;
+  }
+
+  function buildSop008() {
+    return `
+<div class="ds"><h2><span class="sn">1</span> Purpose</h2>
+<p>To ensure all vendors, contractors, and business associates with access to Protected Health Information (PHI) have executed a valid Business Associate Agreement (BAA) prior to any PHI disclosure, in compliance with 45 CFR § 164.308(b).</p></div>
+<div class="ds"><h2><span class="sn">2</span> BAA Management Process</h2>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 1</span><span class="step-title">Vendor Identification</span></div>
+<ul><li>Conduct an annual inventory of all vendors and contractors who may access, transmit, or store PHI.</li><li>Classify each as Business Associate (BA) or non-BA based on HIPAA definition.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 2</span><span class="step-title">BAA Execution</span></div>
+<ul><li>Send RCM-standard BAA template to each identified BA prior to PHI access.</li><li>Obtain signed BAA before any PHI is shared; no exceptions.</li><li>Legal review required for vendor-proposed BAA modifications.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 3</span><span class="step-title">BAA Register Maintenance</span></div>
+<ul><li>Maintain a centralised BAA register with: vendor name, BAA execution date, expiry date, scope, and signatory.</li><li>Store executed BAAs in a secure, access-controlled document repository.</li></ul></div>
+<div class="step-box"><div class="step-hd"><span class="step-lbl">Step 4</span><span class="step-title">Renewal &amp; Termination</span></div>
+<ul><li>Review BAAs annually; renew or update when services or data flows change.</li><li>Upon vendor termination: confirm PHI destruction or return per BAA terms; document certification.</li></ul></div></div>
+<div class="ds"><h2><span class="sn">3</span> Compliance Indicators</h2>
+<table class="kpi-table"><thead><tr><th>Indicator</th><th>Target</th></tr></thead><tbody>
+<tr><td>BAs with Executed BAA</td><td class="kpi-target">100%</td></tr>
+<tr><td>BAA Register Up-to-date</td><td class="kpi-target">100%</td></tr>
+<tr><td>Annual BAA Review Completion</td><td class="kpi-target">100%</td></tr>
+</tbody></table></div>`;
+  }
+
+  // ─── RENDER CARDS ─────────────────────────────────────────────────────────
+  function statusLabel(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function renderCards(filter) {
+    const grid = document.getElementById('sopGrid');
+    grid.innerHTML = '';
+    SOPS.filter(s => !filter || filter === 'all' || s.status === filter).forEach(sop => {
+      const card = document.createElement('div');
+      card.className = 'sop-card';
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-label', 'Open ' + sop.id + ': ' + sop.title);
+      card.innerHTML =
+        '<div class="sop-card-top">' +
+          '<span class="sop-id">' + sop.id + '</span>' +
+          '<span class="sop-status ' + sop.status + '">' +
+            '<span class="sop-dot ' + sop.status + '"></span>' + statusLabel(sop.status) +
+          '</span>' +
+        '</div>' +
+        '<div class="sop-card-title">' + sop.title + '</div>' +
+        '<div class="sop-card-desc">' + sop.description + '</div>' +
+        '<div class="sop-card-meta">' +
+          '<span>v' + sop.version + '</span>' +
+          '<span>' + sop.effectiveDate + '</span>' +
+          '<span>' + sop.category + '</span>' +
+        '</div>' +
+        '<button class="sop-open-btn" data-sopid="' + sop.id + '">' +
+          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
+          'Open &amp; Read SOP' +
+        '</button>';
+      card.addEventListener('click', function(e) {
+        if (!e.target.closest('.sop-open-btn') && e.target !== card) return;
+        openSop(sop.id);
+      });
+      card.querySelector('.sop-open-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        openSop(sop.id);
+      });
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSop(sop.id); }
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function filterSops(btn, filter) {
+    document.querySelectorAll('.sop-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(filter);
+  }
+
+  // ─── RENDER COMPLIANCE CHECKLIST ──────────────────────────────────────────
+  function renderChecklist() {
+    const cl = document.getElementById('complianceChecklist');
+    const items = [
+      'All staff have completed HIPAA compliance training',
+      'BAAs executed with all applicable vendors',
+      'SOP-001 Eligibility verification workflow implemented and tested',
+      'SOP-002 Patient registration process mapped and documented',
+      'ICD-10 / CPT coding SOP reviewed and distributed to coding team',
+      'Claim submission workflow configured in practice management system',
+      'Denial management tracker set up and team trained',
+      'Payment posting reconciliation process live and tested',
+      'All 8 Phase 5 SOPs reviewed and acknowledged by team leads',
+      'Phase 5 compliance audit scheduled (within 30 days of go-live)'
+    ];
+    items.forEach((item, i) => {
+      const saved = localStorage.getItem('sop5-chk-' + i);
+      const div = document.createElement('label');
+      div.className = 'checklist-item';
+      div.innerHTML =
+        '<input type="checkbox" ' + (saved === '1' ? 'checked' : '') + ' data-idx="' + i + '"> ' + item;
+      div.querySelector('input').addEventListener('change', function() {
+        localStorage.setItem('sop5-chk-' + i, this.checked ? '1' : '0');
+      });
+      cl.appendChild(div);
+    });
+  }
+
+  // ─── MODAL OPEN / CLOSE ───────────────────────────────────────────────────
+  function openSop(id) {
+    const sop = SOPS.find(function(s) { return s.id === id; });
+    if (!sop) return;
+
+    document.getElementById('viewerSopId').textContent = sop.id;
+    document.getElementById('viewerTitle').textContent = sop.title;
+
+    document.getElementById('docLhRight').innerHTML =
+      'Version ' + sop.version + '<br>Effective: ' + sop.effectiveDate + '<br>Review: ' + sop.reviewDate;
+
+    document.getElementById('docMeta').innerHTML =
+      '<div class="doc-meta-item"><label>SOP Number</label><span>' + sop.id + '</span></div>' +
+      '<div class="doc-meta-item"><label>Category</label><span>' + sop.category + '</span></div>' +
+      '<div class="doc-meta-item"><label>Document Owner</label><span>' + sop.owner + '</span></div>' +
+      '<div class="doc-meta-item"><label>Version</label><span>' + sop.version + '</span></div>' +
+      '<div class="doc-meta-item"><label>Effective Date</label><span>' + sop.effectiveDate + '</span></div>' +
+      '<div class="doc-meta-item"><label>Review Date</label><span>' + sop.reviewDate + '</span></div>';
+
+    document.getElementById('docTitle').textContent = sop.title;
+    document.getElementById('docSubtitle').textContent =
+      sop.category + ' · Version ' + sop.version + ' · Effective ' + sop.effectiveDate;
+    document.getElementById('docContent').innerHTML = sop.content;
+    document.getElementById('docFooterRef').textContent = sop.id + ' Rev ' + sop.version;
+
+    document.getElementById('viewerScroll').scrollTop = 0;
+    document.getElementById('sopModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSopModal() {
+    document.getElementById('sopModal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function printSop() {
+    const doc = document.querySelector('.sop-doc');
+    if (!doc) return;
+    const win = window.open('', '_blank', 'width=800,height=700');
+    win.document.write(
+      '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+      '<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">' +
+      '<style>' +
+        'body{font-family:Outfit,sans-serif;margin:0;color:#1e293b}' +
+        '.doc-letterhead{background:#0d9488;color:#fff;padding:1.2rem 2rem;display:flex;justify-content:space-between}' +
+        '.doc-org-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;opacity:0.8}' +
+        '.doc-org-name{font-size:0.95rem;font-weight:700}' +
+        '.doc-lh-right{text-align:right;font-size:0.7rem;line-height:1.6;opacity:0.85}' +
+        '.doc-meta{background:#f8fafc;border-bottom:2px solid #0d9488;padding:0.8rem 2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}' +
+        '.doc-meta-item label{display:block;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;color:#94a3b8;margin-bottom:0.15rem}' +
+        '.doc-meta-item span{font-size:0.75rem;font-weight:600;color:#1e293b}' +
+        '.doc-body{padding:1.5rem 2rem}' +
+        '.doc-title{font-size:1.1rem;font-weight:700;color:#0d9488;margin-bottom:0.25rem}' +
+        '.doc-subtitle{font-size:0.75rem;color:#64748b;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #e2e8f0}' +
+        '.ds{margin-bottom:1.4rem}.ds h2{font-size:0.8rem;font-weight:700;color:#0d9488;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.55rem;padding-bottom:0.35rem;border-bottom:1px solid rgba(13,148,136,0.2);display:flex;align-items:center;gap:0.4rem}' +
+        '.sn{background:#0d9488;color:#fff;min-width:1.3rem;height:1.3rem;border-radius:4px;font-size:0.62rem;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700}' +
+        '.ds p,.ds li{font-size:0.82rem;line-height:1.7;color:#334155}' +
+        '.ds ul,.ds ol{padding-left:1.3rem;margin:0.25rem 0 0.5rem}' +
+        '.ds h3{font-size:0.8rem;font-weight:600;color:#1e293b;margin:0.75rem 0 0.4rem}' +
+        '.step-box{border:1px solid rgba(13,148,136,0.2);border-left:3px solid #0d9488;border-radius:5px;padding:0.75rem 1rem;margin-bottom:0.75rem}' +
+        '.step-hd{display:flex;align-items:center;gap:0.45rem;margin-bottom:0.45rem}' +
+        '.step-lbl{background:#0d9488;color:#fff;font-size:0.62rem;font-weight:700;padding:0.1rem 0.42rem;border-radius:3px;text-transform:uppercase}' +
+        '.step-title{font-size:0.8rem;font-weight:600;color:#0f766e}' +
+        '.kpi-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin:0.5rem 0}' +
+        '.kpi-table th{background:#0d9488;color:#fff;padding:0.42rem 0.7rem;text-align:left;font-weight:600;font-size:0.72rem}' +
+        '.kpi-table td{padding:0.42rem 0.7rem;border-bottom:1px solid #e2e8f0;color:#334155}' +
+        '.kpi-table tr:nth-child(even) td{background:#f8fafc}' +
+        '.kpi-target{font-weight:600;color:#0d9488}' +
+        '.callout{background:rgba(13,148,136,0.07);border:1px solid rgba(13,148,136,0.2);border-radius:6px;padding:0.7rem 0.85rem;margin:0.5rem 0;font-size:0.79rem;color:#0f766e}' +
+        '.warn-box{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.22);border-radius:6px;padding:0.7rem 0.85rem;margin:0.5rem 0;font-size:0.79rem;color:#92400e}' +
+        '.resp-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin:0.4rem 0 0.55rem}' +
+        '.resp-table th{background:#f1f5f9;padding:0.38rem 0.7rem;text-align:left;font-weight:600;font-size:0.72rem;color:#1e293b;border-bottom:2px solid #e2e8f0}' +
+        '.resp-table td{padding:0.38rem 0.7rem;border-bottom:1px solid #e2e8f0;color:#334155}' +
+        '.doc-footer{padding:0.75rem 2rem;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;font-size:0.65rem;color:#94a3b8}' +
+        '.doc-illus{display:none}' +
+        '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}' +
+      '</style></head><body>' +
+      doc.outerHTML +
+      '<script>window.onload=function(){window.print();window.close()}<\/script>' +
+      '</body></html>'
+    );
+    win.document.close();
+  }
+
+  // ─── EVENT LISTENERS ─────────────────────────────────────────────────────
+  document.getElementById('closeBtn').addEventListener('click', closeSopModal);
+  document.getElementById('printBtn').addEventListener('click', printSop);
+
+  document.getElementById('sopModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSopModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSopModal();
+  });
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  renderCards('all');
+  renderChecklist();
+  </script>
+</body>
+</html>
