@@ -72,7 +72,17 @@
       }
 
       document.title = 'RCM Portal | ' + data.title;
-      container.innerHTML = '<p class="phase-tag">' + (data.phase || '') + '</p><h1>' + data.title + '</h1><div class="phase-help-doc">' + data.content + '</div>';
+      const phaseTag = document.createElement('p');
+      phaseTag.className = 'phase-tag';
+      phaseTag.textContent = data.phase || '';
+      const titleEl = document.createElement('h1');
+      titleEl.textContent = data.title;
+      const docEl = document.createElement('div');
+      docEl.className = 'phase-help-doc';
+      docEl.innerHTML = data.content;
+      container.appendChild(phaseTag);
+      container.appendChild(titleEl);
+      container.appendChild(docEl);
     })();
   </script>
 </body>
