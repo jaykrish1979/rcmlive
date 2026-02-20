@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCM Portal | Phase Help</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .phase-help-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    .phase-help-page h1 { font-size: 1.5rem; margin-bottom: 0.35rem; }
+    .phase-help-page .phase-tag { font-size: 0.8rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+    .phase-help-doc { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+    .phase-help-doc h2 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--text); }
+    .phase-help-doc h2:first-child { margin-top: 0; }
+    .phase-help-doc p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem; color: var(--text); }
+    .phase-help-doc ul { padding-left: 1.5rem; margin: 0.5rem 0 1rem; }
+    .phase-help-doc li { margin-bottom: 0.4rem; line-height: 1.6; }
+    .phase-help-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); text-decoration: none; font-size: 0.95rem; margin-bottom: 1.25rem; }
+    .phase-help-back:hover { text-decoration: underline; }
+    .phase-help-error { padding: 2rem; text-align: center; color: var(--text-muted); }
+    .phase-help-error a { color: var(--accent); }
+  </style>
+</head>
+<body class="app-page phase-help-body">
+  <header class="app-header">
+    <div class="header-left">
+      <a href="/dashboard.html" class="logo-text">RCM Portal</a>
+      <nav class="main-nav">
+        <a href="/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/help.html" class="nav-link">Help</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span class="user-name" id="userName">—</span>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="phase-help-page">
+    <a href="/dashboard.html" class="phase-help-back" id="phaseHelpBack">← Back to Dashboard</a>
+    <p class="phase-help-notice" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Reference document · Read only</p>
+    <div id="phaseHelpContent">
+      <!-- Rendered by JS -->
+    </div>
+  </main>
+
+  <script src="/js/protection.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/phase-help-data.js"></script>
+  <script>
+    (function() {
+      const user = getAuthUser();
+      if (!user) {
+        window.location.href = '/';
+        return;
+      }
+      const userNameEl = document.getElementById('userName');
+      if (userNameEl) userNameEl.textContent = user.name || user.username;
+
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id') || params.get('phase') || '0';
+      const data = typeof PHASE_HELP !== 'undefined' ? PHASE_HELP[id] : null;
+
+      const container = document.getElementById('phaseHelpContent');
+      if (!data) {
+        container.innerHTML = '<div class="phase-help-error">Phase help not yet available for this section. <a href="/help.html">View general Help</a> or <a href="/dashboard.html">return to Dashboard</a>.</div>';
+        return;
+      }
+
+      document.title = 'RCM Portal | ' + data.title;
+      container.innerHTML = '<p class="phase-tag">' + (data.phase || '') + '</p><h1>' + data.title + '</h1><div class="phase-help-doc">' + data.content + '</div>';
+    })();
+  </script>
+</body>
+</html>

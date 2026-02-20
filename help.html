@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCM Portal | Help & Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .help-page { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    .help-page h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .help-page .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+    .help-section { margin-bottom: 2rem; }
+    .help-section h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent); }
+    .help-section p, .help-section li { color: var(--text); line-height: 1.7; margin-bottom: 0.5rem; }
+    .help-section ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .help-section ul li { margin-bottom: 0.35rem; }
+    .help-cred-box { background: var(--accent-light); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin: 1rem 0; }
+    .help-cred-box p { margin: 0; font-size: 0.9rem; }
+    .help-phase-list { list-style: none; padding-left: 0; }
+    .help-phase-list li { padding: 0.5rem 0; border-bottom: 1px solid rgba(148,163,184,0.2); display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+    .help-phase-list li:last-child { border-bottom: none; }
+    .help-phase-num { font-size: 0.8rem; color: var(--accent); font-weight: 500; }
+    .help-phase-title { font-weight: 500; }
+    .help-phase-desc { font-size: 0.9rem; color: var(--text-muted); }
+    .help-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); text-decoration: none; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .help-back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body class="app-page">
+  <header class="app-header">
+    <div class="header-left">
+      <a href="/dashboard.html" class="logo-text">RCM Portal</a>
+      <nav class="main-nav">
+        <a href="/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/help.html" class="nav-link active">Help</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span class="user-name" id="userName">—</span>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="help-page">
+    <a href="/dashboard.html" class="help-back" id="helpBack">← Back to Dashboard</a>
+
+    <h1>RCM Go-Live Portal</h1>
+    <p class="subtitle">Help &amp; Reference Guide</p>
+
+    <section class="help-section">
+      <h2>Overview</h2>
+      <p>The RCM Go-Live Portal helps you plan and track the complete setup of a US Healthcare Revenue Cycle Management (RCM) operation. It guides you through nine phases—from defining service scope to pilot go-live—with checklists, cost planning, and issue tracking.</p>
+    </section>
+
+    <section class="help-section">
+      <h2>Getting Started</h2>
+      <h3>Login</h3>
+      <p>Sign in with your credentials on the login page.</p>
+      <h3>Dashboard</h3>
+      <p>After login, you land on the Dashboard. Here you can:</p>
+      <ul>
+        <li><strong>Track progress</strong> – The circular progress ring shows how many sections are complete for the selected client.</li>
+        <li><strong>Switch clients</strong> – Use the Client dropdown in the header to work with different clients.</li>
+        <li><strong>Add a client</strong> – Click the <strong>+</strong> button next to the Client dropdown to create a new client.</li>
+      </ul>
+    </section>
+
+    <section class="help-section">
+      <h2>Dashboard Sections</h2>
+      <ul>
+        <li><strong>Client summary cards</strong> – Total clients, Planned, In progress, Live.</li>
+        <li><strong>Clients by status</strong> – Bar showing Planned vs In progress vs Live.</li>
+        <li><strong>Open issues</strong> – Issues logged in sections, with links to open the relevant section.</li>
+        <li><strong>Go-Live Plan sections</strong> – Cards for each phase. Use <strong>View</strong> for a quick preview (popup) or <strong>Open &amp; Edit</strong> to work through the checklist.</li>
+      </ul>
+    </section>
+
+    <section class="help-section">
+      <h2>Working on Sections</h2>
+      <p>Each section contains checklists and forms. You can:</p>
+      <ul>
+        <li><strong>Help</strong> – For phases with detailed documentation, opens a read-only guide (Phase 1 and Phase 2).</li>
+        <li><strong>View</strong> – Opens a popup with the section description and checklist summary.</li>
+        <li><strong>Open &amp; Edit</strong> – Opens the full section page with all items, forms, detail tables, and issues.</li>
+        <li><strong>Save Progress</strong> – Manually save your work (auto-save also runs when you make changes).</li>
+        <li><strong>Mark as Complete &amp; Continue</strong> – Marks the section done and updates the progress ring.</li>
+      </ul>
+      <p>Progress is stored in your browser per client. Use the back link to return to the Dashboard.</p>
+    </section>
+
+    <section class="help-section">
+      <h2>Go-Live Plan Phases</h2>
+      <ul class="help-phase-list">
+        <li><span><span class="help-phase-num">Phase 1</span> <span class="help-phase-title">Service Scope Definition</span></span><span class="help-phase-desc">Define operational scope and services offered</span></li>
+        <li><span><span class="help-phase-num">Phase 2</span> <span class="help-phase-title">Office Setup</span></span><span class="help-phase-desc">Cost estimation and facility planning</span></li>
+        <li><span><span class="help-phase-num">Phase 3</span> <span class="help-phase-title">Discovery &amp; Information Gathering</span></span><span class="help-phase-desc">Capture client details, systems, and compliance</span></li>
+        <li><span><span class="help-phase-num">Phase 4</span> <span class="help-phase-title">Systems &amp; Technology</span></span><span class="help-phase-desc">PMS, EMR, clearinghouse, VPN, and tools</span></li>
+        <li><span><span class="help-phase-num">Phase 5</span> <span class="help-phase-title">SOPs &amp; Compliance</span></span><span class="help-phase-desc">Document processes and BAAs</span></li>
+        <li><span><span class="help-phase-num">Phase 6</span> <span class="help-phase-title">Reports &amp; KPIs</span></span><span class="help-phase-desc">Define daily, denial, AR, and other reports</span></li>
+        <li><span><span class="help-phase-num">Phase 7</span> <span class="help-phase-title">Staffing &amp; Training</span></span><span class="help-phase-desc">Hire, onboard, and qualify the team</span></li>
+        <li><span><span class="help-phase-num">Phase 8</span> <span class="help-phase-title">Pilot &amp; Soft Go-Live</span></span><span class="help-phase-desc">Pilot run and sign-off</span></li>
+        <li><span><span class="help-phase-num">Phase 9</span> <span class="help-phase-title">Risks &amp; Mitigation</span></span><span class="help-phase-desc">Identify and address key risks</span></li>
+        <li><span><span class="help-phase-num">Phase 10</span> <span class="help-phase-title">Office Setup &amp; Capacity Planning</span></span><span class="help-phase-desc">Location comparison, Infopark costing, infrastructure</span></li>
+      </ul>
+    </section>
+
+    <section class="help-section">
+      <h2>Issues &amp; Alerts</h2>
+      <p>You can add issues within sections (e.g. blockers, action items). Issues appear in:</p>
+      <ul>
+        <li>The <strong>Open issues</strong> panel on the Dashboard</li>
+        <li>The <strong>Issues</strong> block at the bottom of each section page</li>
+      </ul>
+      <p>Each issue can have severity, assignee, and resolution status.</p>
+    </section>
+
+    <section class="help-section">
+      <h2>Multi-Client Support</h2>
+      <p>The portal supports multiple clients. Each client has its own:</p>
+      <ul>
+        <li>Section progress and checklists</li>
+        <li>Completed sections</li>
+        <li>Detail tables and office setup data</li>
+        <li>Issues</li>
+      </ul>
+      <p>Use the Client dropdown in the Dashboard header to switch between clients.</p>
+    </section>
+
+    <section class="help-section">
+      <h2>Data Storage</h2>
+      <p>All data is stored locally in your browser. It is not sent to a server. Clearing browser data will reset progress. For team use, consider exporting or backing up data if needed.</p>
+    </section>
+
+    <section class="help-section">
+      <h2>Need More Help?</h2>
+      <p>Contact your administrator or the RCM setup team for questions about content, phases, or workflows.</p>
+    </section>
+  </main>
+
+  <script src="/js/protection.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    (function() {
+      const user = getAuthUser();
+      const userNameEl = document.getElementById('userName');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const helpBack = document.getElementById('helpBack');
+      if (user) {
+        if (userNameEl) userNameEl.textContent = user.name || user.username;
+        if (logoutBtn) logoutBtn.style.display = '';
+        if (helpBack) helpBack.textContent = '← Back to Dashboard';
+      } else {
+        if (userNameEl) userNameEl.innerHTML = '<a href="/" style="color: inherit;">Sign In</a>';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (helpBack) { helpBack.href = '/'; helpBack.textContent = '← Back to Login'; }
+      }
+    })();
+  </script>
+</body>
+</html>
